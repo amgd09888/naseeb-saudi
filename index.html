@@ -1735,3 +1735,212 @@ function toggleFaq(button) {
 }
 
 </script>
+<!-- ===================================== -->
+<!-- الدفعة الرابعة: البحث الفعلي -->
+<!-- ===================================== -->
+
+<script>
+
+function showSearchMessage() {
+
+  const searchBox = document.querySelector(".search-box");
+
+  const selects = searchBox.querySelectorAll("select");
+
+  const gender = selects[0].value;
+  const city = selects[1].value;
+  const ageFrom = selects[2].value;
+  const ageTo = selects[3].value;
+
+  const profiles = document.querySelectorAll(".profile-card");
+
+  let found = 0;
+
+  profiles.forEach(function(profile) {
+
+    const text = profile.innerText;
+
+    const cityMatch =
+      city === "اختر المدينة" ||
+      text.includes(city);
+
+    let age = 0;
+
+    const ageMatch =
+      text.match(/(\d+)\s*سنة/);
+
+    if (ageMatch) {
+      age = parseInt(ageMatch[1]);
+    }
+
+    const from =
+      ageFrom === "العمر من"
+        ? 0
+        : parseInt(ageFrom);
+
+    const to =
+      ageTo === "العمر إلى"
+        ? 100
+        : parseInt(ageTo);
+
+    const ageIsCorrect =
+      age >= from && age <= to;
+
+    /*
+      النسخة الحالية فيها ملفات تجريبية فقط،
+      لذلك الجنس لا يخفي الملفات حالياً.
+      سيتم ربطه بالبيانات الحقيقية لاحقاً.
+    */
+
+    if (cityMatch && ageIsCorrect) {
+
+      profile.style.display = "block";
+
+      found++;
+
+    } else {
+
+      profile.style.display = "none";
+
+    }
+
+  });
+
+
+  const profilesSection =
+    document.querySelector("#profiles");
+
+  profilesSection.scrollIntoView({
+    behavior: "smooth"
+  });
+
+
+  setTimeout(function() {
+
+    if (found === 0) {
+
+      alert(
+        "لم نجد نتائج مطابقة للخيارات الحالية.\n\n" +
+        "جرّب تغيير المدينة أو العمر."
+      );
+
+    }
+
+  }, 500);
+
+}
+
+
+/* ===================================== */
+/* اختيار المدينة */
+/* ===================================== */
+
+function chooseCity(city) {
+
+  const searchBox =
+    document.querySelector(".search-box");
+
+  const citySelect =
+    searchBox.querySelectorAll("select")[1];
+
+  citySelect.value = city;
+
+  searchBox.scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+
+/* ===================================== */
+/* طلب التعارف */
+/* ===================================== */
+
+function contactProfile(name) {
+
+  const phone =
+    "971563970899";
+
+  const message =
+    "مرحباً، أرغب بالاستفسار عن ملف " +
+    name +
+    " في منصة نَصيب.";
+
+  const whatsappUrl =
+    "https://wa.me/" +
+    phone +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.open(
+    whatsappUrl,
+    "_blank"
+  );
+
+}
+
+</script>
+
+
+<!-- ===================================== -->
+<!-- زر العودة للأعلى -->
+<!-- ===================================== -->
+
+<button
+  id="topButton"
+  onclick="window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })">
+
+  ↑
+
+</button>
+
+
+<style>
+
+#topButton {
+
+  position: fixed;
+
+  bottom: 25px;
+
+  left: 25px;
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: var(--green);
+
+  color: white;
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.18);
+
+  z-index: 999;
+
+  transition: .2s;
+
+}
+
+#topButton:hover {
+
+  transform: translateY(-4px);
+
+  background: var(--dark-green);
+
+}
+
+</style>
